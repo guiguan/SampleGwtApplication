@@ -13,6 +13,23 @@
     <!--                                            -->
     <script type="text/javascript" language="javascript"
             src="SampleGwtApplication/SampleGwtApplication.nocache.js"></script>
+    <script type="text/javascript" src="//localhost:3030/dist/primus.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+    <script type="text/javascript" src="//unpkg.com/feathers-client@^1.8.0/dist/feathers.js"></script>
+    <script type="text/javascript">
+        var primus = new Primus('http://localhost:3030');
+        var app = feathers()
+            .configure(feathers.hooks())
+            .configure(feathers.primus(primus));
+
+        var mongoShellService = app.service('/mongo-shells');
+
+        mongoShellService.on('created', function(message) {
+            console.log('Someone created a mongo shell', message);
+        });
+
+        mongoShellService.create({});
+    </script>
 </head>
 
 <!--                                           -->
